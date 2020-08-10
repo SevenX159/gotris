@@ -1,6 +1,6 @@
-# This is a version of the classic Tetris # 
-written in Go for educational purpose (to limit the number of concepts, we may deviate from idiomatic Go at times).
-To build it from source and run it on your machine, you need to install :
+# Gotris is a version of the classic Tetris in Go# 
+It is written for educational purpose and to limit the number of new concepts, we may deviate from idiomatic Go at times.
+<br/>To build it from source and run it on your machine, you need to install :
 1) Git https://git-scm.com/downloads
 2) Visual Studio Code (or any editor/IDE or your choice) https://code.visualstudio.com/download if you want to change the code
 3) Go https://golang.org/dl/
