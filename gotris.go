@@ -2,6 +2,7 @@ package main
 
 import (
 	"math/rand"
+	"time"
 
 	"github.com/algosup/game"
 	"github.com/algosup/game/color"
@@ -252,6 +253,8 @@ func draw(surface game.Surface) {
 }
 
 func main() {
+	// Seed random generator with current time so that each game is a different one
+	rand.Seed(time.Now().UnixNano())
 	pickNewShape()
 	game.Run("GOTRIS", columns*20, rows*20, draw)
 }
