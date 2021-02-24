@@ -1,7 +1,9 @@
 package main
 
 import (
+	col "image/color" // Needed to create the Color Background (Light gray)
 	"math/rand"
+	"strconv" // Needed to convert Score var from INT to STR
 	"time"
 
 	"github.com/algosup/game"
@@ -18,6 +20,9 @@ var screen [rows][columns]uint8
 const columns = 12
 const rows = 24
 
+var colorBackground = col.RGBA{15, 15, 15, 255} // Create a New Color to display Background Lines (Light gray)
+
+var score = 0
 var frame = 0
 var ignoreKey = 0
 var currentShape shape
@@ -86,7 +91,7 @@ func drawShape(surface game.Surface, s shape, col int, row int) {
 		for r := 0; r < 4; r++ {
 			color := s[r][c]
 			if color != 0 {
-				game.DrawRect(surface, (col+c)*20, (row+r)*20, 20, 20, colors[color])
+				game.DrawRect(surface, (col+c)*20, (row+r)*20, 20-1, 20-1, colors[color]) // 20-1 to let 1px space between each square of each shapes
 			}
 		}
 	}
@@ -141,6 +146,7 @@ func clearFullRows() {
 	for r := 0; r < rows; r++ {
 		if isRowFull(r) {
 			clearRow(r)
+			score++
 		}
 	}
 }
@@ -240,15 +246,38 @@ func draw(surface game.Surface) {
 		for r := 0; r < rows; r++ {
 			color := screen[r][c]
 			if color != 0 {
-				game.DrawRect(surface, c*20, r*20, 20, 20, colors[color])
+				game.DrawRect(surface, c*20, r*20, 20-1, 20-1, colors[color]) // 20-1 to let 1px space between each square of each shapes
+
 			}
 		}
 	}
 
 	if isOver {
 		game.DrawText(surface, "GAME OVER", 80, 40)
+		t := strconv.Itoa(score)           // Convert Int to Str
+		game.DrawText(surface, t, 105, 60) // Display of Score at the end of game           105 for Centered in X axis   60 to be displayed just under "Game Over"
+
+		for c := 0; c < columns; c++ { // Display the Cols and Rows at the end of the Game
+			for r := 0; r < rows; r++ {
+				game.DrawRect(surface, c*20-1, r*20-1, rows*20, 1, colorBackground)
+				game.DrawRect(surface, c*20-1, r*20-1, 1, columns*20, colorBackground)
+
+			}
+		}
+
 	} else {
 		drawShape(surface, currentShape, x, y)
+
+		for c := 0; c < columns; c++ { // Display the Cols and Rows while in game
+			for r := 0; r < rows; r++ {
+				game.DrawRect(surface, c*20-1, r*20-1, rows*20, 1, colorBackground)
+				game.DrawRect(surface, c*20-1, r*20-1, 1, columns*20, colorBackground)
+
+			}
+		}
+
+		t := strconv.Itoa(score)           // Convert Int to Str
+		game.DrawText(surface, t, 105, 40) // Display of Score
 	}
 }
 
